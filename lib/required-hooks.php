@@ -6,6 +6,48 @@
 */
 
 /**
+ * Shows the nag when needed.
+ *
+ * @since 1.0.0
+ *
+ * @return void
+*/
+function it_exchange_membership_bbpress_addon_show_version_nag() {
+	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	
+	if ( !is_plugin_active( 'exchange-addon-membership/exchange-addon-membership.php' ) ) {
+		?>
+		<div id="it-exchange-add-on-required-plugin-nag" class="it-exchange-nag">
+			<?php _e( 'The Membership bbPress add-on requires the iThemes Exchange Membership addon. Please install it.', 'LION' ); ?>
+		</div>
+		<script type="text/javascript">
+			jQuery( document ).ready( function() {
+				if ( jQuery( '.wrap > h2' ).length == '1' ) {
+					jQuery("#it-exchange-add-on-required-plugin-nag").insertAfter('.wrap > h2').addClass( 'after-h2' );
+				}
+			});
+		</script>
+		<?php
+	}
+	
+	if ( !is_plugin_active( 'bbpress/bbpress.php' ) ) {
+		?>
+		<div id="it-exchange-add-on-required-plugin-nag" class="it-exchange-nag">
+			<?php _e( 'The Membership bbPress add-on requires bbPress plugin. Please install it.', 'LION' ); ?>
+		</div>
+		<script type="text/javascript">
+			jQuery( document ).ready( function() {
+				if ( jQuery( '.wrap > h2' ).length == '1' ) {
+					jQuery("#it-exchange-add-on-required-plugin-nag").insertAfter('.wrap > h2').addClass( 'after-h2' );
+				}
+			});
+		</script>
+		<?php
+	}
+}
+add_action( 'admin_notices', 'it_exchange_membership_bbpress_addon_show_version_nag' );
+
+/**
  * Display Restricted or Dripped message.
  *
  * Only shows on Replies that are restricted/dripped (though I doubt any would be
