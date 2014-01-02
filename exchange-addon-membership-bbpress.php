@@ -31,7 +31,7 @@ function it_exchange_register_membership_bbpress_addon() {
 		'description'       => __( 'Add Memberships functionality to your bbPress forums.', 'LION' ),
 		'author'            => 'iThemes',
 		'author_url'        => 'http://ithemes.com/exchange/membership-bbpress/',
-		'icon'              => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/lib/images/membership50px.png' ),
+		'icon'              => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/lib/images/bbpress50px.png' ),
 		'file'              => dirname( __FILE__ ) . '/init.php',
 		'category'          => 'other',
 		'basename'          => plugin_basename( __FILE__ ),
