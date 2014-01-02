@@ -53,7 +53,7 @@ add_action( 'it_exchange_register_addons', 'it_exchange_register_membership_bbpr
 function it_exchange_membership_bbpress_set_textdomain() {
 	load_plugin_textdomain( 'LION', false, dirname( plugin_basename( __FILE__  ) ) . '/lang/' );
 }
-//add_action( 'plugins_loaded', 'it_exchange_membership_set_textdomain' );
+add_action( 'plugins_loaded', 'it_exchange_membership_bbpress_set_textdomain' );
 
 /**
  * Registers Plugin with iThemes updater class
@@ -64,7 +64,7 @@ function it_exchange_membership_bbpress_set_textdomain() {
  * @return void
 */
 function ithemes_exchange_addon_membership_bbpress_updater_register( $updater ) { 
-	    $updater->register( 'exchange-addon-membership', __FILE__ );
+	    $updater->register( 'exchange-addon-membership-bbpress', __FILE__ );
 }
-//add_action( 'ithemes_updater_register', 'ithemes_exchange_addon_membership_updater_register' );
-//require( dirname( __FILE__ ) . '/lib/updater/load.php' );
+add_action( 'ithemes_updater_register', 'ithemes_exchange_addon_membership_bbpress_updater_register' );
+require( dirname( __FILE__ ) . '/lib/updater/load.php' );
