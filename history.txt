@@ -2,3 +2,5 @@
 	Initial Release
 1.0.1 - 2014-02-03 - Packaging Bot (lib/updater)
 	Bug Fix: Licensing on SSL-enabled sites now works properly.
+1.0.2 - 2014-07-14 - Lew Ayotte
+	Added filter to make sure bbPress content is listed in member dashboard properly

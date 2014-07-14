@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: iThemes Exchange - Membership bbPress Add-on
- * Version: 1.0.1
+ * Version: 1.0.2
  * Description: Adds the iThemes Exchange Membership management functionality to bbPress
  * Plugin URI: http://ithemes.com/exchange/membership-bbpress/
  * Author: iThemes
