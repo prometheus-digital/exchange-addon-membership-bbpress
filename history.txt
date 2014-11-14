@@ -4,3 +4,6 @@
 	Bug Fix: Licensing on SSL-enabled sites now works properly.
 1.0.2 - 2014-07-14 - Lew Ayotte
 	Added filter to make sure bbPress content is listed in member dashboard properly
+1.0.3 - 2014-11-14 - Packaging Bot (lib/updater)
+	Enhancement: Reduced caching to allow updates to appear more quickly.
+	Enhancement: Authenticating users now uses the new authentication system.
