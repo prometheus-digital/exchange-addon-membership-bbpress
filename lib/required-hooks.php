@@ -113,27 +113,26 @@ function it_exchange_membership_bbpress_addon_membership_content_restricted_post
 	if ( empty( $restricted_posts ) ) {
 	
 		//We need to do this because bbPress sets exclude_from_search for their post types.
-	
 		switch ( $selection ) {
 			
 			case 'forum':
 				$args = array(
-					'post_type' => apply_filters( 'bbp_forum_post_type', 'forum' ),
-					'p'   => $value,
+					'post_type'   => apply_filters( 'bbp_forum_post_type', 'forum' ),
+					'p'           => $value,
 				);
 				$restricted_posts = get_posts( $args );
 				break;
 			case 'topic':
 				$args = array(
-					'post_type' => apply_filters( 'bbp_topic_post_type', 'topic' ),
-					'p'   => $value,
+					'post_type'   => apply_filters( 'bbp_topic_post_type', 'topic' ),
+					'p'           => $value,
 				);
 				$restricted_posts = get_posts( $args );
 				break;
 			case 'reply':
 				$args = array(
-					'post_type' => apply_filters( 'bbp_reply_post_type', 'reply' ),
-					'p'   => $value,
+					'post_type'  => apply_filters( 'bbp_reply_post_type', 'reply' ),
+					'p'           => $value,
 				);
 				$restricted_posts = get_posts( $args );
 				break;
@@ -146,3 +145,37 @@ function it_exchange_membership_bbpress_addon_membership_content_restricted_post
 	
 }
 add_filter( 'it_exchange_membership_addon_membership_content_restricted_posts', 'it_exchange_membership_bbpress_addon_membership_content_restricted_posts', 10, 4 );
+
+/**
+ * Creates sessions data with logged in customer's membership access rules
+ *
+ * @since 1.0.0
+ * @param int $post_id WordPress Post ID
+ * @return void
+*/
+function it_exchange_membership_bbpress_trash_bbpress_content( $post_id ){
+	$post_type = get_post_type( $post_id );
+	
+	switch ( $post_type ) {
+		case apply_filters( 'bbp_forum_post_type', 'forum' ):
+		case apply_filters( 'bbp_topic_post_type', 'topic' ):
+		case apply_filters( 'bbp_reply_post_type', 'reply' ):
+			$rules = get_post_meta( $post_id, '_item-content-rule', true );
+			foreach( $rules as $product_id ) {
+				$changed = false;
+				$access_meta = get_post_meta( $product_id, '_it-exchange-membership-addon-content-access-meta', true );
+				foreach( $access_meta as $key => $meta ) {
+					if ( $post_type == $meta['selection'] && $post_id == $meta['term'] ) {
+						unset( $access_meta[$key] );
+						$changed = true;
+					}
+				}
+				if ( $changed ) {
+					update_post_meta( $product_id, '_it-exchange-membership-addon-content-access-meta', $access_meta );
+				}
+			}
+			delete_post_meta( $post_id, '_item-content-rule' );
+			break;
+	}
+}
+add_action( 'wp_trash_post', 'it_exchange_membership_bbpress_trash_bbpress_content' );
