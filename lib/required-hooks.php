@@ -179,3 +179,70 @@ function it_exchange_membership_bbpress_trash_bbpress_content( $post_id ){
 	}
 }
 add_action( 'wp_trash_post', 'it_exchange_membership_bbpress_trash_bbpress_content' );
+
+function it_exchange_membership_bbpress_addon_is_content_restricted( $restriction, $member_access ) {
+	if ( empty( $restriction ) ) {
+		global $post;
+		
+		if ( !empty( $post ) ) {
+			$tmp_post = $post;
+			
+			if ( 'reply' === $tmp_post->post_type ) {
+				$topic = get_post( $tmp_post->post_parent );
+				$tmp_post = $topic;
+				
+				$restriction_exemptions = get_post_meta( $topic->ID, '_item-content-rule-exemptions', true );
+				if ( !empty( $restriction_exemptions ) ) {
+					foreach( $member_access as $product_id => $txn_id ) {
+						if ( array_key_exists( $product_id, $restriction_exemptions ) )
+							$restriction = true; //we don't want restrict yet, not until we know there aren't other memberships that still have access to this content
+						else
+							continue; //get out of this, we're in a membership that hasn't been exempted
+					}
+					if ( $restriction ) //if it has been restricted, we can return true now
+						return true;
+				}
+				
+				$post_rules = get_post_meta( $topic->ID, '_item-content-rule', true );
+				if ( !empty( $post_rules ) ) {
+					if ( empty( $member_access ) ) return true;
+					foreach( $member_access as $product_id => $txn_id ) {
+						if ( in_array( $product_id, $post_rules ) )
+							return false;	
+					}
+					$restriction = true;
+				}
+			}
+			
+			if ( empty( $restriction ) ) {
+				if ( 'topic' === $tmp_post->post_type ) {
+					$forum = get_post( $tmp_post->post_parent );
+						
+					$restriction_exemptions = get_post_meta( $forum->ID, '_item-content-rule-exemptions', true );
+					if ( !empty( $restriction_exemptions ) ) {
+						foreach( $member_access as $product_id => $txn_id ) {
+							if ( array_key_exists( $product_id, $restriction_exemptions ) )
+								$restriction = true; //we don't want restrict yet, not until we know there aren't other memberships that still have access to this content
+							else
+								continue; //get out of this, we're in a membership that hasn't been exempted
+						}
+						if ( $restriction ) //if it has been restricted, we can return true now
+							return true;
+					}
+					
+					$post_rules = get_post_meta( $forum->ID, '_item-content-rule', true );
+					if ( !empty( $post_rules ) ) {
+						if ( empty( $member_access ) ) return true;
+						foreach( $member_access as $product_id => $txn_id ) {
+							if ( in_array( $product_id, $post_rules ) )
+								return false;	
+						}
+						$restriction = true;
+					}
+				}
+			}
+		}
+	}
+	return $restriction;
+}
+add_filter( 'it_exchange_membership_addon_is_content_restricted', 'it_exchange_membership_bbpress_addon_is_content_restricted', 10, 2 );
