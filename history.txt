@@ -12,3 +12,5 @@
 1.1.0 - 2015-06-30 - Lew Ayotte
 	Restrict Topics if their Forums are restricted... Replies if Topics/Forums are restricted.
 	Add hook to delete membership access rules on trash event (can't wait for delete event)
+1.1.1 - 2015-07-14 - Packaging Bot (lib/updater)
+	Enhancement: Updated link to iThemes support.
