@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: ExchangeWP - Membership bbPress Add-on
- * Version: 1.1.1
+ * Version: 1.1.2
  * Description: Adds the ExchangeWP Membership management functionality to bbPress
  * Plugin URI: https://exchangewp.com/downloads/membership-bbpress/
  * Author: ExchangeWP
@@ -35,6 +35,7 @@ function it_exchange_register_membership_bbpress_addon() {
 		'file'              => dirname( __FILE__ ) . '/init.php',
 		'category'          => 'other',
 		'basename'          => plugin_basename( __FILE__ ),
+		'settings-callback' => 'it_exchange_membership_bbpress_addon_settings_callback',
 		'labels'      => array(
 			'singular_name' => __( 'Membership bbPress', 'LION' ),
 		),
@@ -68,3 +69,33 @@ function ithemes_exchange_addon_membership_bbpress_updater_register( $updater ) 
 }
 add_action( 'ithemes_updater_register', 'ithemes_exchange_addon_membership_bbpress_updater_register' );
 // require( dirname( __FILE__ ) . '/lib/updater/load.php' );
+
+if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) )  {
+ 	require_once 'EDD_SL_Plugin_Updater.php';
+ }
+
+ function exchange_membership_bbpress_plugin_updater() {
+
+ 	// retrieve our license key from the DB
+ 	// this is going to have to be pulled from a seralized array to get the actual key.
+ 	// $license_key = trim( get_option( 'exchange_membership_bbpress_license_key' ) );
+ 	$exchangewp_membership_bbpress_options = get_option( 'it-storage-exchange_membership_bbpress-addon' );
+ 	$license_key = $exchangewp_membership_bbpress_options['membership_bbpress-license-key'];
+
+ 	// setup the updater
+ 	$edd_updater = new EDD_SL_Plugin_Updater( 'https://exchangewp.com', __FILE__, array(
+ 			'version' 		=> '1.1.2', 				// current version number
+ 			'license' 		=> $license_key, 		// license key (used get_option above to retrieve from DB)
+ 			'item_name' 	=> 'membership-bbpress', 	  // name of this plugin
+ 			'author' 	  	=> 'ExchangeWP',    // author of this plugin
+ 			'url'       	=> home_url(),
+ 			'wp_override' => true,
+ 			'beta'		  	=> false
+ 		)
+ 	);
+ 	// var_dump($edd_updater);
+ 	// die();
+
+ }
+
+ add_action( 'admin_init', 'exchange_membership_bbpress_plugin_updater', 0 );

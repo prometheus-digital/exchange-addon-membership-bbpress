@@ -9,3 +9,9 @@
  * Required Hooks.
 */
 include( 'lib/required-hooks.php' );
+
+
+/**
+* Adds the addon settings page.
+*/
+include( 'lib/addon-settings.php' );
