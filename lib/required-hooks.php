@@ -1,6 +1,6 @@
 <?php
 /**
- * iThemes Exchange Membership bbPress Add-on
+ * ExchangeWP Membership bbPress Add-on
  * @package exchange-addon-membership-bbpress
  * @since 1.0.0
 */
@@ -14,11 +14,11 @@
 */
 function it_exchange_membership_bbpress_addon_show_version_nag() {
 	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-	
+
 	if ( !is_plugin_active( 'exchange-addon-membership/exchange-addon-membership.php' ) ) {
 		?>
 		<div id="it-exchange-add-on-required-plugin-nag" class="it-exchange-nag">
-			<?php _e( 'The Membership bbPress add-on requires the iThemes Exchange Membership addon. Please install it.', 'LION' ); ?>
+			<?php _e( 'The Membership bbPress add-on requires the ExchangeWP Membership addon. Please install it.', 'LION' ); ?>
 		</div>
 		<script type="text/javascript">
 			jQuery( document ).ready( function() {
@@ -29,7 +29,7 @@ function it_exchange_membership_bbpress_addon_show_version_nag() {
 		</script>
 		<?php
 	}
-	
+
 	if ( !is_plugin_active( 'bbpress/bbpress.php' ) ) {
 		?>
 		<div id="it-exchange-add-on-required-plugin-nag" class="it-exchange-nag">
@@ -111,10 +111,10 @@ add_filter( 'bbp_get_template_stack', 'it_exchange_membership_bbpress_get_templa
 function it_exchange_membership_bbpress_addon_membership_content_restricted_posts( $restricted_posts, $selection, $selected, $value ) {
 
 	if ( empty( $restricted_posts ) ) {
-	
+
 		//We need to do this because bbPress sets exclude_from_search for their post types.
 		switch ( $selection ) {
-			
+
 			case 'forum':
 				$args = array(
 					'post_type'   => apply_filters( 'bbp_forum_post_type', 'forum' ),
@@ -136,13 +136,13 @@ function it_exchange_membership_bbpress_addon_membership_content_restricted_post
 				);
 				$restricted_posts = get_posts( $args );
 				break;
-			
+
 		}
-		
+
 	}
 
 	return $restricted_posts;
-	
+
 }
 add_filter( 'it_exchange_membership_addon_membership_content_restricted_posts', 'it_exchange_membership_bbpress_addon_membership_content_restricted_posts', 10, 4 );
 
@@ -155,7 +155,7 @@ add_filter( 'it_exchange_membership_addon_membership_content_restricted_posts', 
 */
 function it_exchange_membership_bbpress_trash_bbpress_content( $post_id ){
 	$post_type = get_post_type( $post_id );
-	
+
 	switch ( $post_type ) {
 		case apply_filters( 'bbp_forum_post_type', 'forum' ):
 		case apply_filters( 'bbp_topic_post_type', 'topic' ):
@@ -183,14 +183,14 @@ add_action( 'wp_trash_post', 'it_exchange_membership_bbpress_trash_bbpress_conte
 function it_exchange_membership_bbpress_addon_is_content_restricted( $restriction, $member_access ) {
 	if ( empty( $restriction ) ) {
 		global $post;
-		
+
 		if ( !empty( $post ) ) {
 			$tmp_post = $post;
-			
+
 			if ( 'reply' === $tmp_post->post_type ) {
 				$topic = get_post( $tmp_post->post_parent );
 				$tmp_post = $topic;
-				
+
 				$restriction_exemptions = get_post_meta( $topic->ID, '_item-content-rule-exemptions', true );
 				if ( !empty( $restriction_exemptions ) ) {
 					foreach( $member_access as $product_id => $txn_id ) {
@@ -202,22 +202,22 @@ function it_exchange_membership_bbpress_addon_is_content_restricted( $restrictio
 					if ( $restriction ) //if it has been restricted, we can return true now
 						return true;
 				}
-				
+
 				$post_rules = get_post_meta( $topic->ID, '_item-content-rule', true );
 				if ( !empty( $post_rules ) ) {
 					if ( empty( $member_access ) ) return true;
 					foreach( $member_access as $product_id => $txn_id ) {
 						if ( in_array( $product_id, $post_rules ) )
-							return false;	
+							return false;
 					}
 					$restriction = true;
 				}
 			}
-			
+
 			if ( empty( $restriction ) ) {
 				if ( 'topic' === $tmp_post->post_type ) {
 					$forum = get_post( $tmp_post->post_parent );
-						
+
 					$restriction_exemptions = get_post_meta( $forum->ID, '_item-content-rule-exemptions', true );
 					if ( !empty( $restriction_exemptions ) ) {
 						foreach( $member_access as $product_id => $txn_id ) {
@@ -229,13 +229,13 @@ function it_exchange_membership_bbpress_addon_is_content_restricted( $restrictio
 						if ( $restriction ) //if it has been restricted, we can return true now
 							return true;
 					}
-					
+
 					$post_rules = get_post_meta( $forum->ID, '_item-content-rule', true );
 					if ( !empty( $post_rules ) ) {
 						if ( empty( $member_access ) ) return true;
 						foreach( $member_access as $product_id => $txn_id ) {
 							if ( in_array( $product_id, $post_rules ) )
-								return false;	
+								return false;
 						}
 						$restriction = true;
 					}

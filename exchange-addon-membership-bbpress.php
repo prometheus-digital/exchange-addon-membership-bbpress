@@ -1,13 +1,13 @@
 <?php
 /*
- * Plugin Name: iThemes Exchange - Membership bbPress Add-on
+ * Plugin Name: ExchangeWP - Membership bbPress Add-on
  * Version: 1.1.1
- * Description: Adds the iThemes Exchange Membership management functionality to bbPress
- * Plugin URI: http://ithemes.com/exchange/membership-bbpress/
- * Author: iThemes
- * Author URI: http://ithemes.com
- * iThemes Package: exchange-addon-membership-bbpress
- 
+ * Description: Adds the ExchangeWP Membership management functionality to bbPress
+ * Plugin URI: https://exchangewp.com/downloads/membership-bbpress/
+ * Author: ExchangeWP
+ * Author URI: http://exchangewp.com
+ * ExchangeWP Package: exchange-addon-membership-bbpress
+
  * Installation:
  * 1. Download and unzip the latest release zip file.
  * 2. If you use the WordPress plugin uploader to install this plugin skip to step 4.
@@ -29,8 +29,8 @@ function it_exchange_register_membership_bbpress_addon() {
 	$options = array(
 		'name'              => __( 'Membership for bbPress', 'LION' ),
 		'description'       => __( 'Add Memberships functionality to your bbPress forums.', 'LION' ),
-		'author'            => 'iThemes',
-		'author_url'        => 'http://ithemes.com/exchange/membership-bbpress/',
+		'author'            => 'ExchangeWP',
+		'author_url'        => 'https://exchangewp.com/downloads/membership-bbpress/',
 		'icon'              => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/lib/images/bbpress50px.png' ),
 		'file'              => dirname( __FILE__ ) . '/init.php',
 		'category'          => 'other',
@@ -63,8 +63,8 @@ add_action( 'plugins_loaded', 'it_exchange_membership_bbpress_set_textdomain' );
  * @param object $updater ithemes updater object
  * @return void
 */
-function ithemes_exchange_addon_membership_bbpress_updater_register( $updater ) { 
+function ithemes_exchange_addon_membership_bbpress_updater_register( $updater ) {
 	    $updater->register( 'exchange-addon-membership-bbpress', __FILE__ );
 }
 add_action( 'ithemes_updater_register', 'ithemes_exchange_addon_membership_bbpress_updater_register' );
-require( dirname( __FILE__ ) . '/lib/updater/load.php' );
+// require( dirname( __FILE__ ) . '/lib/updater/load.php' );
