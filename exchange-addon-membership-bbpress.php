@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: ExchangeWP - Membership bbPress Add-on
- * Version: 0.0.1
+ * Version: 1.1.3
  * Description: Adds the ExchangeWP Membership management functionality to bbPress
  * Plugin URI: https://exchangewp.com/downloads/membership-bbpress/
  * Author: ExchangeWP
@@ -57,11 +57,11 @@ function it_exchange_membership_bbpress_set_textdomain() {
 add_action( 'plugins_loaded', 'it_exchange_membership_bbpress_set_textdomain' );
 
 /**
- * Registers Plugin with iThemes updater class
+ * Registers Plugin with ExchangeWP updater class
  *
  * @since 1.0.0
  *
- * @param object $updater ithemes updater object
+ * @param object $updater exchangewp updater object
  * @return void
 */
 function exchange_membership_bbpress_plugin_updater() {
@@ -73,7 +73,7 @@ function exchange_membership_bbpress_plugin_updater() {
 		$license = $license_key['exchange_license'];
 
 		$edd_updater = new EDD_SL_Plugin_Updater( 'https://exchangewp.com', __FILE__, array(
-				'version' 		=> '0.0.1', 				// current version number
+				'version' 		=> '1.1.3', 				// current version number
 				'license' 		=> $license, 				// license key (used get_option above to retrieve from DB)
 				'item_id'		 	=> 582,					 	  // name of this plugin
 				'author' 	  	=> 'ExchangeWP',    // author of this plugin
